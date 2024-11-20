@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Thought from '../models/Thought.js';
 import User from '../models/User.js';
+import { Types } from 'mongoose';
 // Get all thoughts
 export const getThoughts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -63,13 +64,25 @@ export const createThought = (req, res) => __awaiter(void 0, void 0, void 0, fun
 });
 // Update a thought
 export const updateThought = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params; // Extract the thought ID from the URL params
+    const { thoughtText } = req.body; // Extract the new thought text from the request body
+    // Check if the provided ID is a valid MongoDB ObjectId
+    if (!Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: 'Invalid Thought ID format' });
+        return;
+    }
     try {
-        const thought = yield Thought.findByIdAndUpdate(req.params.thoughtId, req.body, { new: true });
-        if (!thought) {
+        // Find the thought by ID and update it with the new data
+        const updatedThought = yield Thought.findByIdAndUpdate(id, { thoughtText }, // Only update the `thoughtText` field
+        { new: true } // Return the updated document
+        );
+        // If the thought was not found, return a 404 error
+        if (!updatedThought) {
             res.status(404).json({ message: 'Thought not found' });
             return;
         }
-        res.json(thought);
+        // Return the updated thought as a response
+        res.json(updatedThought);
     }
     catch (err) {
         res.status(500).json({ message: err.message });

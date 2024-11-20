@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Thought from '../models/Thought.js';
 import User from '../models/User.js';
+import { Types } from 'mongoose';
 
 // Get all thoughts
 export const getThoughts = async (req: Request, res: Response) => {
@@ -65,21 +66,36 @@ export const createThought = async (req: Request, res: Response): Promise<void> 
 
 // Update a thought
 export const updateThought = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const thought = await Thought.findByIdAndUpdate(
-      req.params.thoughtId,
-      req.body,
-      { new: true }
-    );
-    if (!thought) {
-      res.status(404).json({ message: 'Thought not found' });
-      return;
+    const { id } = req.params;  // Extract the thought ID from the URL params
+    const { thoughtText } = req.body;  // Extract the new thought text from the request body
+
+    // Check if the provided ID is a valid MongoDB ObjectId
+    if (!Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: 'Invalid Thought ID format' });
+        return;
     }
-    res.json(thought);
-  } catch (err: any) {
-    res.status(500).json({ message: err.message });
-  }
+
+    try {
+        // Find the thought by ID and update it with the new data
+        const updatedThought = await Thought.findByIdAndUpdate(
+            id, 
+            { thoughtText },  // Only update the `thoughtText` field
+            { new: true }  // Return the updated document
+        );
+
+        // If the thought was not found, return a 404 error
+        if (!updatedThought) {
+            res.status(404).json({ message: 'Thought not found' });
+            return;
+        }
+
+        // Return the updated thought as a response
+        res.json(updatedThought);
+    } catch (err: any) {
+        res.status(500).json({ message: err.message });
+    }
 };
+
 
 // Delete a thought
 export const deleteThought = async (req: Request, res: Response): Promise<void> => {

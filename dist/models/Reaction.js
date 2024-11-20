@@ -22,7 +22,7 @@ const ReactionSchema = new Schema({
         virtuals: true, // Include virtuals when converting to object
         getters: true, // Enable getters
     },
-    _id: false, // Disable automatic _id for subdocuments
+    _id: true, // Disable automatic _id for subdocuments
 });
 // Virtual field to get the formatted date
 ReactionSchema.virtual('formattedCreatedAt').get(function () {

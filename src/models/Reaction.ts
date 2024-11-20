@@ -34,7 +34,7 @@ const ReactionSchema = new Schema<IReaction>(
       virtuals: true, // Include virtuals when converting to object
       getters: true,  // Enable getters
     },
-    _id: false, // Disable automatic _id for subdocuments
+    _id: true, // Disable automatic _id for subdocuments
   }
 );
 
