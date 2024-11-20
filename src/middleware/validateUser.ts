@@ -1,17 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 
-export const validateUser = (req: Request, res: Response, next: NextFunction) => {
-    const { username, email } = req.body;
-    const emailPattern = /.+@.+\..+/; // Simple regex pattern for email validation 
-    
-    if (!username) {
-        return res.status(400).json({ message: 'Username is required' });
-    }
+export const validateUser = (req: Request, res: Response, next: NextFunction): void => {
+  const { username, email } = req.body;
+  const emailPattern = /.+@.+\..+/; // Simple regex pattern for email validation
 
-    if (!email || !emailPattern.test(email)) {
-        return res.status(400).json({ message: 'Valid email is required' })
-    }
+  // Validate `username`
+  if (!username) {
+    res.status(400).json({ message: 'Username is required' });
+    return; // Explicitly stop execution
+  }
 
-    next()
+  // Validate `email`
+  if (!email || !emailPattern.test(email)) {
+    res.status(400).json({ message: 'Valid email is required' });
+    return; // Explicitly stop execution
+  }
+
+  // If validation passes, call the next middleware
+  next();
 };
-

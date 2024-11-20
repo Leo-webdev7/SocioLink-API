@@ -8,7 +8,7 @@ export const registerUser = async (req: Request, res: Response) => {
         const newUser = new User({ username, email });
         await newUser.save();
         res.status(201).json(newUser);
-    } catch (err) {
+    } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
 };
@@ -21,7 +21,7 @@ export const loginUser = async (req: Request, res: Response) => {
         const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.json(user);
-    } catch (err) {
+    } catch (err: any) {
         res.status(500).json({ message: err.message });
     }
 };

@@ -1,49 +1,44 @@
-import { Schema, model, Document } from "mongoose";
-import ReactionSchema from "./Reaction";
+import { Schema, model, Document, Types } from "mongoose";
+import ReactionSchema, { IReaction } from "./Reaction";
 
-// Interface for TypeScript
+// Thought interface
 interface IThought extends Document {
     thoughtText: string;
     createdAt: Date;
     username: string;
-    reactions: typeof ReactionSchema[];
-    reactionCount?: number; // Virtual property
+    reactions: Types.DocumentArray<IReaction>; // Use DocumentArray for subdocuments
 }
 
-// Thought schema definition
-const ThoughtSchema = new Schema<IThought>({
-    thoughtText: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 280
+const ThoughtSchema = new Schema<IThought>(
+    {
+        thoughtText: {
+            type: String,
+            required: true,
+            minlength: 1,
+            maxlength: 280,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        reactions: [{
+            type: Types.ObjectId,
+            ref: 'Reaction',  // Reference the Reaction model
+    }],
     },
-    createdAt: {
-        type: Date,
-        dafault: Date.now,
-        get: (timestamp: Date) => timestamp.toLocaleString()
-    },
-    username: {
-        type: String,
-        required: true
-    },
-    reactions: [ReactionSchema]
-    }, {
+    {
         toJSON: {
             virtuals: true,
-            getters: true
         },
         toObject: {
             virtuals: true,
-            getters: true
+        },
     }
-});
+);
 
-// Create a virtual property `reactionCount` that gets the number of reactions
-ThoughtSchema.virtual('reactionCount').get(function(){
-    return this.reactions.length;
-});
-
-const Thought = model<IThought>('Thought', ThoughtSchema);
-
+const Thought = model<IThought>("Thought", ThoughtSchema);
 export default Thought;

@@ -1,16 +1,6 @@
-import { Schema, model, Document, Types } from 'mongoose';
-
-// Interface for TypeScript
-interface IUser extends Document {
-    username: string;
-    email: string;
-    thoughts: Types.ObjectId[];
-    friends: Types.ObjectId[];
-    friendCount?: number; // Virtual property
-}
-
+import { Schema, model, Types } from 'mongoose';
 // User schema definition
-const UserSchema = new Schema<IUser>({
+const UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
@@ -38,17 +28,14 @@ const UserSchema = new Schema<IUser>({
 }, {
     toJSON: {
         virtuals: true,
-    }, 
+    },
     toObject: {
         virtuals: true,
     }
 });
-
 // Create a virtual property `friendCount` that gets the number of friends
-UserSchema.virtual('friendCount').get(function(this: IUser) {
+UserSchema.virtual('friendCount').get(function () {
     return this.friends.length;
 });
-
-const User = model<IUser>('User', UserSchema);
-
+const User = model('User', UserSchema);
 export default User;
