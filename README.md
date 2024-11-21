@@ -78,7 +78,7 @@ SocioLink is a RESTful API for a social networking application where users can s
 ## Links
 
 GitHub repository - https://github.com/Leo-webdev7/SocioLink-API
-
+Walkthrough video - https://drive.google.com/file/d/1_ZHgGtdTmX4Sd_mSBJCWyLobjG-EH-k3/view?usp=sharing
 
 
 
