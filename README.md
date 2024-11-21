@@ -10,6 +10,7 @@
 * [Installation](#installation)
 * [Usage Information](#usage-information)
 * [Screenshots](#screenshots)
+* [Links](#links)
 * [License](#license)
 * [Questions](#questions)
 
@@ -73,6 +74,10 @@ SocioLink is a RESTful API for a social networking application where users can s
 ![2024-11-21_100011](https://github.com/user-attachments/assets/4d25d700-df52-417c-8f28-b3738bad214d)
 ![2024-11-21_095949](https://github.com/user-attachments/assets/3dd87c9a-e08e-41a6-bab5-6407900ff387)
 ![2024-11-21_095918](https://github.com/user-attachments/assets/0ca1e076-5949-4342-a3c6-a2eb96b50391)
+
+## Links
+
+GitHub repository - https://github.com/Leo-webdev7/SocioLink-API
 
 
 
